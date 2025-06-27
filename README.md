@@ -58,6 +58,9 @@ A responsive weather app that displays the **current weather conditions** for an
 
 ✅ No build tools or API keys needed.
 
+
+
+
 🧠 Future Improvements
  Add weather icons based on condition
 
@@ -67,9 +70,15 @@ A responsive weather app that displays the **current weather conditions** for an
 
  Dark/light theme toggle
 
+
+
+
 👨‍💻 Author
 Ernest Munyoki
 JavaScript Developer | Open-Meteo Enthusiast
+
+
+
 
 📄 License
 This project is open-source and free to use under the MIT License.
