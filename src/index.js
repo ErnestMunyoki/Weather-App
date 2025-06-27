@@ -10,7 +10,6 @@ searchButton.addEventListener("click", () => {
 
 async function getWeather(city) {
   try {
-    // Step 1: Get coordinates
     const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${city}`);
     const geoData = await geoRes.json();
 
@@ -21,7 +20,6 @@ async function getWeather(city) {
 
     const { latitude, longitude, name } = geoData.results[0];
 
-    // Step 2: Get weather data
     const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&hourly=relative_humidity_2m,precipitation`);
     const weatherData = await weatherRes.json();
 
@@ -31,7 +29,6 @@ async function getWeather(city) {
     const rain = weatherData.hourly.precipitation[currentIndex];
     const wind = current.windspeed;
 
-    // Update UI
     document.querySelector(".city").textContent = name;
     document.querySelector(".temp").textContent = `${current.temperature}°C`;
     document.querySelector(".humidity").textContent = `${humidity}%`;
