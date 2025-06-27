@@ -20,24 +20,28 @@ async function getWeather(city) {
 
     const { latitude, longitude, name } = geoData.results[0];
 
-    const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&hourly=relative_humidity_2m,precipitation`);
+    const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&hourly=relative_humidity_2m,precipitation&timezone=auto`);
     const weatherData = await weatherRes.json();
 
     const current = weatherData.current_weather;
-    const currentIndex = weatherData.hourly.time.findIndex(t => t === current.time);
-    const humidity = weatherData.hourly.relative_humidity_2m[currentIndex];
-    const rain = weatherData.hourly.precipitation[currentIndex];
-    const wind = current.windspeed;
+    const hourly = weatherData.hourly;
+
+    const currentHour = current.time.slice(0, 13);
+
+    const currentIndex = hourly.time.findIndex(t => t.startsWith(currentHour));
+    const humidity = currentIndex !== -1 ? hourly.relative_humidity_2m[currentIndex] : "--";
+    const rain = currentIndex !== -1 ? hourly.precipitation[currentIndex] : "--";
 
     document.querySelector(".city").textContent = name;
     document.querySelector(".temp").textContent = `${current.temperature}°C`;
     document.querySelector(".humidity").textContent = `${humidity}%`;
-    document.querySelector(".wind").textContent = `${wind} km/h`;
+    document.querySelector(".wind").textContent = `${current.windspeed} km/h`;
     document.querySelector(".rain").textContent = `${rain} mm`;
-    document.querySelector(".weather-icon").src = "./assets/cloud.png"; // Optional: make dynamic
+    document.querySelector(".weather-icon").src = "./assets/cloud.png"; 
 
   } catch (err) {
     console.error(err);
-    alert("Error getting weather data.");
+    alert("Failed to fetch weather data.");
   }
 }
+
